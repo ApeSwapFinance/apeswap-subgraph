@@ -8,7 +8,8 @@
     "build": "graph build",
     "create-local": "graph create ape-swap/apeswap-subgraph --node http://127.0.0.1:8020",
     "deploy-local": "graph deploy ape-swap/apeswap-subgraph --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
-    "deploy": "graph deploy ape-swap/apeswap-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
+    "create-remote": "graph create ape-swap/apeswap-subgraph --node http://188.34.132.202:8020",
+    "deploy": "graph deploy ape-swap/apeswap-subgraph --ipfs http://161.97.117.103:5001/ --node http://188.34.132.202:8020/ --debug",
     "deploy-staging": "graph deploy $THE_GRAPH_GITHUB_USER/$THE_GRAPH_SUBGRAPH_NAME /ApeSwap --ipfs https://api.staging.thegraph.com/ipfs/ --node https://api.staging.thegraph.com/deploy/",
     "watch-local": "graph deploy graphprotocol/ApeSwap2 --watch --debug --node http://127.0.0.1:8020/ --ipfs http://localhost:5001"
   },
