@@ -5,8 +5,8 @@ import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
 const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
 const BUSD_WBNB_PAIR = '0x51e6d27fa57373d8d4c256231241053a70cb1d93' // created block 4857769
-const DAI_WBNB_PAIR = ''  // created block xxx
-const USDT_WBNB_PAIR = '' // created block xxx
+const DAI_WBNB_PAIR = '0xf3010261b58b2874639ca2e860e9005e3be5de0b'  // created block 481116
+const USDT_WBNB_PAIR = '0x20bcc3b8a0091ddac2d0bc30f68e6cbb97de59cd' // created block 648115
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
@@ -42,8 +42,6 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95', // BANANA
-  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', // CAKE
   '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', // WBNB
   '0xe9e7cea3dedca5984780bafc599bd69add087d56', // BUSD
   '0x55d398326f99059ff775485246999027b3197955', // USDT
@@ -54,6 +52,8 @@ let WHITELIST: string[] = [
   '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', // BTCB
   '0x2170ed0880ac9a755fd29b2688956bd959f933f8', // WETH
   '0x250632378e573c6be1ac2f97fcdf00515d0aa91b', // BETH
+  '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95', // BANANA
+  '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', // CAKE
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
