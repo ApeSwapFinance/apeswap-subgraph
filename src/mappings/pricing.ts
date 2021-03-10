@@ -52,7 +52,7 @@ let WHITELIST: string[] = [
   '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', // BTCB
   '0x2170ed0880ac9a755fd29b2688956bd959f933f8', // WETH
   '0x250632378e573c6be1ac2f97fcdf00515d0aa91b', // BETH
-  '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95', // BANANA
+  '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95', // BANANA
   '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', // CAKE
   '0xe02df9e3e622debdd69fb838bb799e3f168902c5', // BAKE
 ]
