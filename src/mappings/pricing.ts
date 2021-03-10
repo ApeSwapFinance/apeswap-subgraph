@@ -54,13 +54,14 @@ let WHITELIST: string[] = [
   '0x250632378e573c6be1ac2f97fcdf00515d0aa91b', // BETH
   '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95', // BANANA
   '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', // CAKE
+  '0xe02df9e3e622debdd69fb838bb799e3f168902c5', // BAKE
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
-let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('400000')
+let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('10000')
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('2')
+let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('1')
 
 /**
  * Search through graph to find derived Eth per token.
