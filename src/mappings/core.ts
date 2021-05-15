@@ -454,8 +454,6 @@ export function handleSwap(event: Swap): void {
   uniswap.untrackedVolumeUSD = uniswap.untrackedVolumeUSD.plus(derivedAmountUSD)
   uniswap.txCount = uniswap.txCount.plus(ONE_BI)
 
-
-
   // save entities
   pair.save()
   token0.save()
