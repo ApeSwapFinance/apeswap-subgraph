@@ -11,7 +11,7 @@ import {
   Bundle
 } from '../types/schema'
 import { Pair as PairContract, Mint, Burn, Swap, Transfer, Sync } from '../types/templates/Pair/Pair'
-import { updatePairDayData, updateTokenDayData, updateUniswapDayData, updatePairHourData } from './dayUpdates'
+import { updatePairDayData, updateTokenDayData, updateUniswapDayData, updatePairHourData, updateUserDayData } from './dayUpdates'
 import { getEthPriceInUSD, findEthPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD } from './pricing'
 import {
   convertTokenToDecimal,
@@ -454,6 +454,8 @@ export function handleSwap(event: Swap): void {
   uniswap.untrackedVolumeUSD = uniswap.untrackedVolumeUSD.plus(derivedAmountUSD)
   uniswap.txCount = uniswap.txCount.plus(ONE_BI)
 
+
+
   // save entities
   pair.save()
   token0.save()
@@ -493,6 +495,11 @@ export function handleSwap(event: Swap): void {
   // use the tracked amount if we have it
   swap.amountUSD = trackedAmountUSD === ZERO_BD ? derivedAmountUSD : trackedAmountUSD
   swap.save()
+
+  // Make sure user exists
+  let from = event.transaction.from
+  createUser(from)
+  updateUserDayData(event, swap.amountUSD)
 
   // update the transaction
 
