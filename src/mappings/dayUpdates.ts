@@ -67,6 +67,8 @@ export function updateUserDayData(event: ethereum.Event, trackedAmountUSD: BigDe
   let dayPairID = event.transaction.from
     .toHexString()
     .concat('-')
+    .concat(event.address.toHexString())
+    .concat('-')
     .concat(BigInt.fromI32(dayID).toString())
   let pair = Pair.load(event.address.toHexString())
   let user = User.load(event.transaction.from.toHexString())
