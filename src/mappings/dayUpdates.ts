@@ -82,6 +82,7 @@ export function updateUserDayData(event: ethereum.Event, trackedAmountUSD: BigDe
   }
   userPairDayData.dailyVolumeUSD = userPairDayData.dailyVolumeUSD.plus(trackedAmountUSD)
   user.usdSwapped = user.usdSwapped.plus(trackedAmountUSD)
+  user.transactionCount = user.transactionCount.plus(ONE_BI)
   userPairDayData.save()
   user.save()
   return userPairDayData as UserPairDayData

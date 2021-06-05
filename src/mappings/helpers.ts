@@ -143,6 +143,7 @@ export function createUser(address: Address): void {
   if (user === null) {
     user = new User(address.toHexString())
     user.usdSwapped = ZERO_BD
+    user.transactionCount = ZERO_BI
     user.save()
   }
 }
