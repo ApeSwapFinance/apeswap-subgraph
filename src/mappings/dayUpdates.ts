@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { PairHourData } from './../types/schema'
+import { PairHourData, User, UserPairDayData } from './../types/schema'
 import { BigInt, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
 import { Pair, Bundle, Token, UniswapFactory, UniswapDayData, PairDayData, TokenDayData } from '../types/schema'
 import { ONE_BI, ZERO_BD, ZERO_BI, FACTORY_ADDRESS } from './helpers'
@@ -58,6 +58,34 @@ export function updatePairDayData(event: ethereum.Event): PairDayData {
   pairDayData.save()
 
   return pairDayData as PairDayData
+}
+
+export function updateUserDayData(event: ethereum.Event, trackedAmountUSD: BigDecimal): UserPairDayData {
+  let timestamp = event.block.timestamp.toI32()
+  let dayID = timestamp / 86400
+  let dayStartTimestamp = dayID * 86400
+  let dayPairID = event.transaction.from
+    .toHexString()
+    .concat('-')
+    .concat(event.address.toHexString())
+    .concat('-')
+    .concat(BigInt.fromI32(dayID).toString())
+  let pair = Pair.load(event.address.toHexString())
+  let user = User.load(event.transaction.from.toHexString())
+  let userPairDayData = UserPairDayData.load(dayPairID)
+  if (userPairDayData === null) {
+    userPairDayData = new UserPairDayData(dayPairID)
+    userPairDayData.date = dayStartTimestamp
+    userPairDayData.pair = pair.id
+    userPairDayData.user = user.id
+    userPairDayData.dailyVolumeUSD = ZERO_BD
+  }
+  userPairDayData.dailyVolumeUSD = userPairDayData.dailyVolumeUSD.plus(trackedAmountUSD)
+  user.usdSwapped = user.usdSwapped.plus(trackedAmountUSD)
+  user.transactionCount = user.transactionCount.plus(ONE_BI)
+  userPairDayData.save()
+  user.save()
+  return userPairDayData as UserPairDayData
 }
 
 export function updatePairHourData(event: ethereum.Event): PairHourData {

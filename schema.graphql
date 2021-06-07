@@ -98,7 +98,18 @@ type Pair @entity {
 type User @entity {
   id: ID!
   liquidityPositions: [LiquidityPosition!] @derivedFrom(field: "user")
+  pairDayData: [UserPairDayData!] @derivedFrom(field: "user")
   usdSwapped: BigDecimal!
+  transactionCount: BigInt!
+}
+
+# Data accumulated and condensed into day stats for each exchange
+type UserPairDayData @entity {
+  id: ID!
+  date: Int!
+  user: User!
+  pair: Pair!
+  dailyVolumeUSD: BigDecimal!
 }
 
 type LiquidityPosition @entity {
