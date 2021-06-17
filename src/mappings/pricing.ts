@@ -3,6 +3,7 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
+/*
 const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
 const BUSD_WBNB_PAIR = '0x51e6d27fa57373d8d4c256231241053a70cb1d93' // created block 4857769
 const DAI_WBNB_PAIR = '0xf3010261b58b2874639ca2e860e9005e3be5de0b'  // created block 481116
@@ -41,7 +42,7 @@ export function getEthPriceInUSD(): BigDecimal {
 }
 
 // token where amounts should contribute to tracked volume and liquidity
-let WHITELIST: string[] = [
+const WHITELIST: string[] = [
   '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', // WBNB
   '0xe9e7cea3dedca5984780bafc599bd69add087d56', // BUSD
   '0x55d398326f99059ff775485246999027b3197955', // USDT
@@ -53,10 +54,47 @@ let WHITELIST: string[] = [
   '0x2170ed0880ac9a755fd29b2688956bd959f933f8', // WETH
   '0x250632378e573c6be1ac2f97fcdf00515d0aa91b', // BETH
   '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95', // BANANA
+] */
+
+// MATIC Setup
+const WMATIC_ADDRESS = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+const DAI_WMATIC_PAIR = '0xd32f3139a214034a0f9777c87ee0a064c1ff6ae2' 
+const USDT_WMATIC_PAIR = '0x65d43b64e3b31965cd5ea367d4c2b94c03084797'
+
+export function getEthPriceInUSD(): BigDecimal {
+  // fetch eth prices for each stablecoin
+  let usdtPair = Pair.load(USDT_WMATIC_PAIR) // usdt is token0 / TOKEN1
+  let daiPair = Pair.load(DAI_WMATIC_PAIR)   // dai is token0 / TOKEN1
+
+  // all 2 have been created
+  if (daiPair !== null && usdtPair !== null) {
+    let totalLiquidityMATIC = daiPair.reserve0.plus(usdtPair.reserve0)
+    let daiWeight = daiPair.reserve0.div(totalLiquidityMATIC)
+    let usdtWeight = usdtPair.reserve0.div(totalLiquidityMATIC)
+    return daiPair.token1Price.times(daiWeight).plus(usdtPair.token1Price.times(usdtWeight))
+    // usdt is the only pair so far
+  } else if (usdtPair !== null) {
+    return usdtPair.token1Price
+  } else if (usdtPair !== null) {
+    return daiPair.token1Price
+  } else {
+    return ZERO_BD
+  }
+}
+
+// Matic WHITELIST
+const WHITELIST: string[] = [
+  '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', // WMATIC
+  '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', // WETH
+  '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // USDC
+  '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063', // DAI
+  '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', // USDT
+  '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', // WBTC
+  '0x5d47baba0d66083c52009271faf3f50dcc01023c', // BANANA
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
-let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('10000')
+let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('100')
 
 // minimum liquidity for price to get tracked
 let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('1')
@@ -66,7 +104,7 @@ let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('1')
  * @todo update to be derived ETH (add stablecoin estimates)
  **/
 export function findEthPerToken(token: Token): BigDecimal {
-  if (token.id == WBNB_ADDRESS) {
+  if (token.id == WMATIC_ADDRESS) {
     return ONE_BD
   }
   // loop through whitelist and check if paired with any
